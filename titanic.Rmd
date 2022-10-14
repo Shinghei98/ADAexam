@@ -17,8 +17,9 @@ pacman::p_load(tidyverse, ggplot2)
 
 Step 1: Importing the dataset
 ```{r}
-titanic <- read.csv("https://github.com/kijohnson/Data")
+titanic <- read.csv("C:/Users/User/Desktop/titanic.csv")
 titanic$Pclass <- as.factor(titanic$Pclass)
+titanic$Sex <- as.factor(titanic$Sex)
 
 ```
 
@@ -27,11 +28,22 @@ Step 2: Determine the median age for by passenger class
 medianAge <- titanic %>% 
   group_by(Pclass) %>%
   summarise(median=median(Age))
+print(medianAge)
 ```
 
 Step 3: Draw plot that shows medians, spread of data, and outliers for the continuous variable age according to passenger class
 ```{r}
 ggplot(titanic, aes(x=Pclass, y=Age)) + geom_boxplot()
 
+```
+
+Step 4:Determine the percentage of males and females by class
+```{r}
+percentage <- titanic %>%
+  group_by(Pclass, Sex) %>%
+  summarise(n=n()) %>%
+  mutate(percent = n / sum(n) * 100) %>%
+  ungroup()
+print(percentage)
 ```
 
